@@ -1,4 +1,4 @@
-import { FlatList, Text } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import ExpenseItem from "./ExpenseItem";
 
 function renderExpenseItem(itemData) { 
@@ -6,6 +6,12 @@ function renderExpenseItem(itemData) {
 }
 
 function ExpensesList({expenses}) {
+  
+  if (expenses.length === 0) {
+    return <View style={styles.container}>
+      <Text style={styles.text}>You have no expenses at the moment!</Text>
+    </View>
+  }
 
   return <FlatList 
     data={expenses}
@@ -15,3 +21,14 @@ function ExpensesList({expenses}) {
 }
 
 export default ExpensesList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center"
+  },
+  text:{
+    color:"white",
+  }
+})
