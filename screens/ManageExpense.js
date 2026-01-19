@@ -2,7 +2,6 @@ import { useContext, useLayoutEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
-import Button from "../components/UI/Button";
 import { ExpensesContext } from "../store/expenses-context";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
@@ -26,29 +25,23 @@ function ManageExpense({ route, navigation }) {
     navigation.goBack()
   }
 
-  function confirmHandler() {
+  function confirmHandler(expenseData) {
     if (isEditing) {
-      expensesCtx.updateExpense(
-        editedExpenseId,
-        {
-          description: "Test Update", 
-          amount:49.99, 
-          date: new Date()
-        }
-      )
+      expensesCtx.updateExpense(editedExpenseId,expenseData)
     } else {
-      expensesCtx.addExpense({description: "Test", amount:19.99, date: new Date()})
+      expensesCtx.addExpense(expenseData)
     }
     navigation.goBack()
   }
   
   return(
     <View style={styles.container}>
-      <ExpenseForm />
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={cancelHandler} >Cancel</Button>
-        <Button style={styles.button} onPress={confirmHandler} >{isEditing? "Update" : "Add"}</Button>
-      </View>
+      <ExpenseForm 
+        onCancel={cancelHandler} 
+        isEditing={isEditing} 
+        onSubmit={confirmHandler}
+        submitButtonLabel={isEditing? "Update" : "Add"}
+      />
       {isEditing && 
       <View style={styles.deleteContainer}>
         <IconButton icon="trash" size={32} color={GlobalStyles.colors.error500} onPress={deleteExpenseHandler} />
@@ -66,15 +59,6 @@ const styles = StyleSheet.create({
     flex:1,
     padding:24,
     backgroundColor:GlobalStyles.colors.primary800
-  },
-  buttons:{
-    flexDirection:"row",
-    justifyContent:"center",
-    alignItems:"center"
-  },
-  button:{
-    minWidth:120,
-    marginHorizontal:8
   },
   deleteContainer:{
     marginTop:16,
