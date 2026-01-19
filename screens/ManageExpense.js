@@ -43,7 +43,7 @@ function ManageExpense({ route, navigation }) {
         isEditing={isEditing} 
         onSubmit={confirmHandler}
         submitButtonLabel={isEditing? "Update" : "Add"}
-        selectedExpense ={selectedExpense}
+        defaultValues ={selectedExpense}
       />
       {isEditing && 
       <View style={styles.deleteContainer}>
